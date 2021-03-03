@@ -1,0 +1,11 @@
+{
+    "extends": "@tsconfig/node12/tsconfig.json",
+    "include": [
+        "src"
+    ],
+    "compilerOptions": {
+        "outDir": "dist",
+        "declaration": true,
+        "removeComments": true
+    },
+}
