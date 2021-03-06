@@ -16,7 +16,7 @@ export default function (): Plugin {
 
         async buildStart(options) {
             try {
-                const exists = await fs.pathExists('public/cesium/Assets');
+                const exists = await fs.pathExists(path.join(publicPath, 'cesium/Assets'));
                 if (!exists) {
                     await fs.copy(path.join(cesiumBuildPath, 'Assets'), path.join(publicPath, 'cesium/Assets'));
                     await fs.copy(path.join(cesiumBuildPath, 'ThirdParty'), path.join(publicPath, 'cesium/ThirdParty'));
