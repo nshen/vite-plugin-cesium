@@ -7,6 +7,8 @@ Easily set up a [`Cesium`] project in [`Vite`].
 [`Cesium`]: https://github.com/CesiumGS/cesium
 [`Vite`]: https://github.com/vitejs/vite
 
+[中文教程](https://segmentfault.com/a/1190000039344137)
+
 ## Install
 
 ```bash
