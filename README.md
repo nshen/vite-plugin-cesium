@@ -28,6 +28,25 @@ export default defineConfig({
 });
 ```
 
+## Options
+
+**rebuildCesium**
+
+- **Type :** `boolean`
+- **Default :** `false`
+
+Default copy min cesium file to dist. if `true` will rebuild cesium. 
+
+```js
+import { defineConfig } from 'vite';
+import cesium from 'vite-plugin-cesium';
+export default defineConfig({
+    plugins: [cesium({
+        rebuildCesium: false
+    })],
+});
+```
+
 ## Demo
 
 
