@@ -25,7 +25,8 @@
     "url": "https://github.com/nshen/vite-plugin-cesium/issues"
   },
   "dependencies": {
-    "fs-extra": "^9.1.0"
+    "fs-extra": "^9.1.0",
+    "rollup-plugin-external-globals": "^0.6.1"
   },
   "devDependencies": {
     "@tsconfig/node12": "^1.0.7",
