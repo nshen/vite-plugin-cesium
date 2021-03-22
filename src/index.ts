@@ -84,10 +84,12 @@ function vitePluginCesium(
             path.join(cesiumBuildPath, 'Widgets'),
             path.join(outDir, 'cesium/Widgets')
           );
-          await fs.copy(
-            path.join(cesiumBuildPath, 'Cesium.js'),
-            path.join(outDir, 'cesium/Cesium.js')
-          );
+          if (!rebuildCesium) {
+            await fs.copy(
+              path.join(cesiumBuildPath, 'Cesium.js'),
+              path.join(outDir, 'cesium/Cesium.js')
+            );
+          }
         } catch (err) {
           console.error('copy failed', err);
         }
