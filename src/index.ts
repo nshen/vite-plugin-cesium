@@ -65,46 +65,32 @@ function vitePluginCesium(
       middlewares.use(CESIUM_BASE_URL, serveStatic(cesiumPath));
     },
 
-    async buildStart() {
+    async closeBundle() {
       if (isBuild) {
-        const exists = await fs.pathExists(path.join(publicPath, 'cesium'));
-
-        if (!exists) {
-          try {
-            await fs.copy(
-              path.join(cesiumBuildPath, 'Assets'),
-              path.join(publicPath, 'cesium/Assets')
-            );
-            await fs.copy(
-              path.join(cesiumBuildPath, 'ThirdParty'),
-              path.join(publicPath, 'cesium/ThirdParty')
-            );
-            await fs.copy(
-              path.join(cesiumBuildPath, 'Workers'),
-              path.join(publicPath, 'cesium/Workers')
-            );
-            await fs.copy(
-              path.join(cesiumBuildPath, 'Widgets'),
-              path.join(publicPath, 'cesium/Widgets')
-            );
-          } catch (err) {
-            console.error('copy failed', err);
-          }
-        }
-        if (rebuildCesium) {
-          await fs.remove(path.join(publicPath, 'cesium/Cesium.js'));
-        } else {
+        try {
+          await fs.copy(
+            path.join(cesiumBuildPath, 'Assets'),
+            path.join(outDir, 'cesium/Assets')
+          );
+          await fs.copy(
+            path.join(cesiumBuildPath, 'ThirdParty'),
+            path.join(outDir, 'cesium/ThirdParty')
+          );
+          await fs.copy(
+            path.join(cesiumBuildPath, 'Workers'),
+            path.join(outDir, 'cesium/Workers')
+          );
+          await fs.copy(
+            path.join(cesiumBuildPath, 'Widgets'),
+            path.join(outDir, 'cesium/Widgets')
+          );
           await fs.copy(
             path.join(cesiumBuildPath, 'Cesium.js'),
-            path.join(publicPath, 'cesium/Cesium.js')
+            path.join(outDir, 'cesium/Cesium.js')
           );
+        } catch (err) {
+          console.error('copy failed', err);
         }
-      }
-    },
-    async renderStart() {
-      const existOutDir = await fs.pathExists(path.join(outDir, 'cesium'));
-      if (existOutDir) {
-        await fs.remove(path.join(publicPath, 'cesium'));
       }
     },
 
