@@ -8,7 +8,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "tsc -w"
   },
   "keywords": [
     "vite",
@@ -34,6 +35,7 @@
     "@types/fs-extra": "^9.0.8",
     "@types/node": "^14.14.31",
     "@types/serve-static": "^1.13.9",
+    "prettier": "^2.2.1",
     "typescript": "^4.2.2",
     "vite": "^2.0.4"
   },
