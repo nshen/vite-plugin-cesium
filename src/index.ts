@@ -1,8 +1,8 @@
-import path from "path";
-import { Plugin, UserConfig, HtmlTagDescriptor } from "vite";
-import fs from "fs-extra";
-import externalGlobals from "rollup-plugin-external-globals";
-import serveStatic from "serve-static";
+import path from 'path';
+import { Plugin, UserConfig, HtmlTagDescriptor } from 'vite';
+import fs from 'fs-extra';
+import externalGlobals from 'rollup-plugin-external-globals';
+import serveStatic from 'serve-static';
 
 interface VitePluginCesiumOptions {
   rebuildCesium?: boolean;
@@ -12,37 +12,37 @@ interface VitePluginCesiumOptions {
 function vitePluginCesium(
   options: VitePluginCesiumOptions = {
     rebuildCesium: false,
-    minifyCesium: false,
+    minifyCesium: false
   }
 ): Plugin {
   const { rebuildCesium, minifyCesium } = options;
 
-  const cesiumBuildRootPath = "node_modules/cesium/Build";
-  const cesiumBuildPath = "node_modules/cesium/Build/Cesium/";
-  const CESIUM_BASE_URL = "/cesium/";
+  const cesiumBuildRootPath = 'node_modules/cesium/Build';
+  const cesiumBuildPath = 'node_modules/cesium/Build/Cesium/';
+  const CESIUM_BASE_URL = '/cesium/';
 
-  let publicPath = "public";
-  let outDir = "dist";
+  let publicPath = 'public';
+  let outDir = 'dist';
   let base: string;
   let isBuild: boolean = false;
 
   return {
-    name: "vite-plugin-cesium",
+    name: 'vite-plugin-cesium',
 
     config(_, { command }) {
       const userConfig: UserConfig = {
         build: {
           assetsInlineLimit: 0,
-          chunkSizeWarningLimit: 4000,
+          chunkSizeWarningLimit: 4000
         },
         define: {
-          CESIUM_BASE_URL,
-        },
+          CESIUM_BASE_URL
+        }
       };
-      if (command === "build" && !rebuildCesium) {
+      if (command === 'build' && !rebuildCesium) {
         userConfig.build!.rollupOptions = {
-          external: ["cesium"],
-          plugins: [externalGlobals({ cesium: "Cesium" })],
+          external: ['cesium'],
+          plugins: [externalGlobals({ cesium: 'Cesium' })]
         };
       }
 
@@ -54,75 +54,75 @@ function vitePluginCesium(
       outDir = resolvedConfig.build.outDir;
       base = resolvedConfig.base;
       isBuild =
-        resolvedConfig.isProduction || resolvedConfig.command === "build";
+        resolvedConfig.isProduction || resolvedConfig.command === 'build';
     },
 
     configureServer({ middlewares }) {
       const cesiumPath = path.join(
         cesiumBuildRootPath,
-        minifyCesium ? "Cesium" : "CesiumUnminified"
+        minifyCesium ? 'Cesium' : 'CesiumUnminified'
       );
       middlewares.use(CESIUM_BASE_URL, serveStatic(cesiumPath));
     },
 
     async buildStart() {
       if (isBuild) {
-        const exists = await fs.pathExists(path.join(publicPath, "cesium"));
+        const exists = await fs.pathExists(path.join(publicPath, 'cesium'));
 
         if (!exists) {
           try {
             await fs.copy(
-              path.join(cesiumBuildPath, "Assets"),
-              path.join(publicPath, "cesium/Assets")
+              path.join(cesiumBuildPath, 'Assets'),
+              path.join(publicPath, 'cesium/Assets')
             );
             await fs.copy(
-              path.join(cesiumBuildPath, "ThirdParty"),
-              path.join(publicPath, "cesium/ThirdParty")
+              path.join(cesiumBuildPath, 'ThirdParty'),
+              path.join(publicPath, 'cesium/ThirdParty')
             );
             await fs.copy(
-              path.join(cesiumBuildPath, "Workers"),
-              path.join(publicPath, "cesium/Workers")
+              path.join(cesiumBuildPath, 'Workers'),
+              path.join(publicPath, 'cesium/Workers')
             );
             await fs.copy(
-              path.join(cesiumBuildPath, "Widgets"),
-              path.join(publicPath, "cesium/Widgets")
+              path.join(cesiumBuildPath, 'Widgets'),
+              path.join(publicPath, 'cesium/Widgets')
             );
           } catch (err) {
-            console.error("copy failed", err);
+            console.error('copy failed', err);
           }
         }
         if (rebuildCesium) {
-          await fs.remove(path.join(publicPath, "cesium/Cesium.js"));
+          await fs.remove(path.join(publicPath, 'cesium/Cesium.js'));
         } else {
           await fs.copy(
-            path.join(cesiumBuildPath, "Cesium.js"),
-            path.join(publicPath, "cesium/Cesium.js")
+            path.join(cesiumBuildPath, 'Cesium.js'),
+            path.join(publicPath, 'cesium/Cesium.js')
           );
         }
       }
     },
     async renderStart() {
-      const existOutDir = await fs.pathExists(path.join(outDir, "cesium"));
+      const existOutDir = await fs.pathExists(path.join(outDir, 'cesium'));
       if (existOutDir) {
-        await fs.remove(path.join(publicPath, "cesium"));
+        await fs.remove(path.join(publicPath, 'cesium'));
       }
     },
 
     transformIndexHtml() {
       const tags: HtmlTagDescriptor[] = [
         {
-          tag: "link",
+          tag: 'link',
           attrs: {
-            rel: "stylesheet",
-            href: base + "cesium/Widgets/widgets.css",
-          },
-        },
+            rel: 'stylesheet',
+            href: base + 'cesium/Widgets/widgets.css'
+          }
+        }
       ];
       if (!rebuildCesium) {
-        tags.push({ tag: "script", attrs: { src: base + "cesium/Cesium.js" } });
+        tags.push({ tag: 'script', attrs: { src: base + 'cesium/Cesium.js' } });
       }
       return tags;
-    },
+    }
   };
 }
 
