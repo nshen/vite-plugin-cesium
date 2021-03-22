@@ -6,16 +6,16 @@ import serveStatic from 'serve-static';
 
 interface VitePluginCesiumOptions {
   rebuildCesium?: boolean;
-  minifyCesium?: boolean;
+  devMinifyCesium?: boolean;
 }
 
 function vitePluginCesium(
   options: VitePluginCesiumOptions = {
     rebuildCesium: false,
-    minifyCesium: false
+    devMinifyCesium: false
   }
 ): Plugin {
-  const { rebuildCesium, minifyCesium } = options;
+  const { rebuildCesium, devMinifyCesium } = options;
 
   const cesiumBuildRootPath = 'node_modules/cesium/Build';
   const cesiumBuildPath = 'node_modules/cesium/Build/Cesium/';
@@ -60,7 +60,7 @@ function vitePluginCesium(
     configureServer({ middlewares }) {
       const cesiumPath = path.join(
         cesiumBuildRootPath,
-        minifyCesium ? 'Cesium' : 'CesiumUnminified'
+        devMinifyCesium ? 'Cesium' : 'CesiumUnminified'
       );
       middlewares.use(CESIUM_BASE_URL, serveStatic(cesiumPath));
     },
