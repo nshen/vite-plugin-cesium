@@ -106,7 +106,7 @@ function vitePluginCesium(
           }
         }
       ];
-      if (!rebuildCesium) {
+      if (isBuild && !rebuildCesium) {
         tags.push({ tag: 'script', attrs: { src: base + 'cesium/Cesium.js' } });
       }
       return tags;
