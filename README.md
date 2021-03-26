@@ -1,4 +1,4 @@
-# vite-plugin-cesium 
+# ⚡ vite-plugin-cesium 
 
 [![npm](https://img.shields.io/npm/v/vite-plugin-cesium.svg)](https://www.npmjs.com/package/vite-plugin-cesium)
 
