@@ -12,8 +12,8 @@ Easily set up a [`Cesium`] project in [`Vite`].
 ## Install
 
 ```bash
-npm i cesium -D # yarn add cesium -D
-npm i vite-plugin-cesium -D # yarn add vite-plugin-cesium -D
+npm i cesium vite-plugin-cesium vite -D 
+# yarn add cesium vite-plugin-cesium vite -D
 ```
 
 ## Usage
@@ -27,6 +27,18 @@ export default defineConfig({
     plugins: [cesium()],
 });
 ```
+
+add dev command to `package.json`
+
+```json
+"scripts": {
+  "dev": "vite",
+  "build": "vite build"
+}
+```
+run:
+
+`yarn dev`
 
 ## Options
 
