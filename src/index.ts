@@ -36,7 +36,7 @@ function vitePluginCesium(
           chunkSizeWarningLimit: 4000
         },
         define: {
-          CESIUM_BASE_URL
+          CESIUM_BASE_URL: JSON.stringify(CESIUM_BASE_URL)
         }
       };
       if (command === 'build' && !rebuildCesium) {
