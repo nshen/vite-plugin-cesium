@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-cesium",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "description": "Cesium library plugin for Vite",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,10 +37,10 @@
     "@types/serve-static": "^1.13.9",
     "prettier": "^2.2.1",
     "typescript": "^4.2.2",
-    "vite": "^2.0.4"
+    "vite": "^2.2.1"
   },
   "peerDependencies": {
     "cesium": "^1.80",
-    "vite": "^2.1.5"
+    "vite": "^2.2.1"
   }
 }
