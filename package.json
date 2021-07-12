@@ -37,10 +37,10 @@
     "@types/serve-static": "^1.13.9",
     "prettier": "^2.2.1",
     "typescript": "^4.2.2",
-    "vite": "^2.2.1"
+    "vite": "^2.4.1"
   },
   "peerDependencies": {
-    "cesium": "^1.80",
-    "vite": "^2.2.1"
+    "cesium": "^1.83.0",
+    "vite": "^2.4.1"
   }
 }
