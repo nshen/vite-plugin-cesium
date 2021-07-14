@@ -75,6 +75,13 @@ import './css/main.css';
 const viewer = new Viewer('cesiumContainer');
 ```
 
+> or if you like global Cesium object you can write as
+
+```js
+import * as Cesium from 'cesium';
+const viewer = new Cesium.Viewer('cesiumContainer');
+```
+
 `index.html`
 
 ```html
@@ -120,6 +127,9 @@ Add `dev` and `build` commands to `package.json`
 Run `yarn dev`
 
 For full demo project please check [./demo](https://github.com/nshen/vite-plugin-cesium/tree/main/demo) folder.
+
+## 
+
 
 ## License
 
