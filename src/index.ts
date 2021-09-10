@@ -21,7 +21,6 @@ function vitePluginCesium(
   const cesiumBuildPath = 'node_modules/cesium/Build/Cesium/';
   const CESIUM_BASE_URL = '/cesium/';
 
-  let publicPath = 'public';
   let outDir = 'dist';
   let base: string;
   let isBuild: boolean = false;
@@ -30,13 +29,14 @@ function vitePluginCesium(
     name: 'vite-plugin-cesium',
 
     config(_, { command }) {
+      const isBuild = command === 'build'
       const userConfig: UserConfig = {
         build: {
           assetsInlineLimit: 0,
           chunkSizeWarningLimit: 4000
         },
         define: {
-          CESIUM_BASE_URL: JSON.stringify(CESIUM_BASE_URL)
+          CESIUM_BASE_URL: JSON.stringify(isBuild ? base + CESIUM_BASE_URL : CESIUM_BASE_URL)
         }
       };
       if (command === 'build' && !rebuildCesium) {
@@ -102,7 +102,7 @@ function vitePluginCesium(
           tag: 'link',
           attrs: {
             rel: 'stylesheet',
-            href: base + 'cesium/Widgets/widgets.css'
+            href: isBuild ? base + 'cesium/Widgets/widgets.css' : CESIUM_BASE_URL + 'Widgets/widgets.css'
           }
         }
       ];
