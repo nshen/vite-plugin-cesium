@@ -102,7 +102,7 @@ function vitePluginCesium(
           tag: 'link',
           attrs: {
             rel: 'stylesheet',
-            href: base + 'cesium/Widgets/widgets.css'
+            href: CESIUM_BASE_URL + '/Widgets/widgets.css'
           }
         }
       ];
