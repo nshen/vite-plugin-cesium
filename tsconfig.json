@@ -6,6 +6,6 @@
     "compilerOptions": {
         "outDir": "dist",
         "declaration": true,
-        "removeComments": true
+        "removeComments": false,
     },
 }

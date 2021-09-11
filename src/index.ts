@@ -1,10 +1,13 @@
-import path from 'path';
-import { Plugin, UserConfig, HtmlTagDescriptor } from 'vite';
 import fs from 'fs-extra';
+import path from 'path';
 import externalGlobals from 'rollup-plugin-external-globals';
 import serveStatic from 'serve-static';
+import { HtmlTagDescriptor, Plugin, UserConfig } from 'vite';
 
 interface VitePluginCesiumOptions {
+  /**
+   * rebuild cesium library, default: false
+   */
   rebuildCesium?: boolean;
   devMinifyCesium?: boolean;
 }
@@ -19,42 +22,53 @@ function vitePluginCesium(
 
   const cesiumBuildRootPath = 'node_modules/cesium/Build';
   const cesiumBuildPath = 'node_modules/cesium/Build/Cesium/';
-  const CESIUM_BASE_URL = '/cesium/';
 
+  let CESIUM_BASE_URL = '/cesium/';
   let outDir = 'dist';
-  let base: string;
+  let base: string = '/';
   let isBuild: boolean = false;
 
   return {
     name: 'vite-plugin-cesium',
 
-    config(_, { command }) {
-      const isBuild = command === 'build'
+    config(c, { command }) {
+      isBuild = command === 'build';
+      if (c.build?.outDir) outDir = c.build.outDir;
+      if (c.base) {
+        base = c.base;
+      }
+      if (isBuild) CESIUM_BASE_URL = path.join(base, CESIUM_BASE_URL);
       const userConfig: UserConfig = {
         build: {
           assetsInlineLimit: 0,
           chunkSizeWarningLimit: 4000
         },
         define: {
-          CESIUM_BASE_URL: JSON.stringify(isBuild ? base + CESIUM_BASE_URL : CESIUM_BASE_URL)
+          CESIUM_BASE_URL: JSON.stringify(CESIUM_BASE_URL)
         }
       };
-      if (command === 'build' && !rebuildCesium) {
+      if (isBuild && !rebuildCesium) {
         userConfig.build!.rollupOptions = {
           external: ['cesium'],
           plugins: [externalGlobals({ cesium: 'Cesium' })]
         };
       }
-
       return userConfig;
     },
 
-    configResolved(resolvedConfig) {
-      publicPath = resolvedConfig.publicDir;
-      outDir = resolvedConfig.build.outDir;
-      base = resolvedConfig.base;
-      isBuild =
-        resolvedConfig.isProduction || resolvedConfig.command === 'build';
+    async load(id: string) {
+      if (!rebuildCesium) return null;
+      // replace CESIUM_BASE_URL variable in 'cesium/Source/Core/buildModuleUrl.js'
+      if (id.includes('buildModuleUrl')) {
+        let file = fs.readFileSync(id, { encoding: 'utf8' });
+        file = file.replace(
+          /CESIUM_BASE_URL/g,
+          JSON.stringify(CESIUM_BASE_URL)
+        );
+        return file;
+      }
+
+      return null;
     },
 
     configureServer({ middlewares }) {
@@ -102,12 +116,15 @@ function vitePluginCesium(
           tag: 'link',
           attrs: {
             rel: 'stylesheet',
-            href: isBuild ? base + 'cesium/Widgets/widgets.css' : CESIUM_BASE_URL + 'Widgets/widgets.css'
+            href: path.join(CESIUM_BASE_URL, 'Widgets/widgets.css')
           }
         }
       ];
       if (isBuild && !rebuildCesium) {
-        tags.push({ tag: 'script', attrs: { src: base + 'cesium/Cesium.js' } });
+        tags.push({
+          tag: 'script',
+          attrs: { src: path.join(base, 'cesium/Cesium.js') }
+        });
       }
       return tags;
     }
