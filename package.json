@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-cesium",
-  "version": "1.2.7",
+  "version": "1.2.9",
   "description": "Cesium library plugin for Vite",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

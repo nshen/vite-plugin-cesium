@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import externalGlobals from 'rollup-plugin-external-globals';
 import serveStatic from 'serve-static';
-import { HtmlTagDescriptor, Plugin, UserConfig } from 'vite';
+import { HtmlTagDescriptor, normalizePath, Plugin, UserConfig } from 'vite';
 
 interface VitePluginCesiumOptions {
   /**
@@ -116,14 +116,16 @@ function vitePluginCesium(
           tag: 'link',
           attrs: {
             rel: 'stylesheet',
-            href: path.join(CESIUM_BASE_URL, 'Widgets/widgets.css')
+            href: normalizePath(
+              path.join(CESIUM_BASE_URL, 'Widgets/widgets.css')
+            )
           }
         }
       ];
       if (isBuild && !rebuildCesium) {
         tags.push({
           tag: 'script',
-          attrs: { src: path.join(base, 'cesium/Cesium.js') }
+          attrs: { src: normalizePath(path.join(base, 'cesium/Cesium.js')) }
         });
       }
       return tags;
