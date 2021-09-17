@@ -1,6 +1,7 @@
 # ⚡ vite-plugin-cesium
 
 [![npm](https://img.shields.io/npm/v/vite-plugin-cesium.svg)](https://www.npmjs.com/package/vite-plugin-cesium)
+[![npm](https://img.shields.io/npm/dt/vite-plugin-cesium)](https://www.npmjs.com/package/vite-plugin-cesium)
 
 Easily set up a [`Cesium`] project in [`Vite`].
 
@@ -128,8 +129,7 @@ Run `yarn dev`
 
 For full demo project please check [./demo](https://github.com/nshen/vite-plugin-cesium/tree/main/demo) folder.
 
-## 
-
+##
 
 ## License
 
