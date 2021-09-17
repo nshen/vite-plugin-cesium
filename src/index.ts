@@ -33,7 +33,6 @@ function vitePluginCesium(
 
     config(c, { command }) {
       isBuild = command === 'build';
-      if (c.build?.outDir) outDir = c.build.outDir;
       if (c.base) {
         base = c.base;
       }
@@ -54,6 +53,10 @@ function vitePluginCesium(
         };
       }
       return userConfig;
+    },
+
+    configResolved(resolvedConfig) {
+      outDir = path.join(resolvedConfig.root, resolvedConfig.build.outDir);
     },
 
     async load(id: string) {
