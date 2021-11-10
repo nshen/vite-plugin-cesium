@@ -10,15 +10,17 @@ interface VitePluginCesiumOptions {
    */
   rebuildCesium?: boolean;
   devMinifyCesium?: boolean;
+  outDirRelativeToRoot?: boolean;
 }
 
 function vitePluginCesium(
   options: VitePluginCesiumOptions = {
     rebuildCesium: false,
-    devMinifyCesium: false
+    devMinifyCesium: false,
+    outDirRelativeToRoot: true
   }
 ): Plugin {
-  const { rebuildCesium, devMinifyCesium } = options;
+  const { rebuildCesium, devMinifyCesium, outDirRelativeToRoot } = options;
 
   const cesiumBuildRootPath = 'node_modules/cesium/Build';
   const cesiumBuildPath = 'node_modules/cesium/Build/Cesium/';
@@ -56,7 +58,10 @@ function vitePluginCesium(
     },
 
     configResolved(resolvedConfig) {
-      outDir = path.join(resolvedConfig.root, resolvedConfig.build.outDir);
+      outDir = path.join(
+        outDirRelativeToRoot ? resolvedConfig.root : '', 
+        resolvedConfig.build.outDir
+      );
     },
 
     async load(id: string) {
