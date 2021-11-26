@@ -10,7 +10,7 @@ Easily set up a [`Cesium`] project in [`Vite`].
 
 **update：** if you just wanna a scaffolding by using this plugin, try a simply command `yarn create cesium`, click [create-cesium](https://www.npmjs.com/package/create-cesium) for more info.
 
-Chinese tutorial: [中文教程](https://segmentfault.com/a/1190000039344137)
+Chinese tutorial: [中文教程](https://zhuanlan.zhihu.com/p/354856692)
 
 ## Install
 
