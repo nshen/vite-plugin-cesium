@@ -36,6 +36,7 @@ function vitePluginCesium(
       if (c.base) {
         base = c.base;
       }
+      if (base === '') base = './';
       if (isBuild) CESIUM_BASE_URL = path.join(base, CESIUM_BASE_URL);
       const userConfig: UserConfig = {
         build: {
