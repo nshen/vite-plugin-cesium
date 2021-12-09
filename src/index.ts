@@ -56,10 +56,6 @@ function vitePluginCesium(
       return userConfig;
     },
 
-    configResolved(resolvedConfig) {
-      outDir = path.join(resolvedConfig.root, resolvedConfig.build.outDir);
-    },
-
     async load(id: string) {
       if (!rebuildCesium) return null;
       // replace CESIUM_BASE_URL variable in 'cesium/Source/Core/buildModuleUrl.js'
