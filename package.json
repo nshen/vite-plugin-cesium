@@ -40,6 +40,6 @@
     "vite": "^2.7.1"
   },
   "peerDependencies": {
-    "cesium": "^1.85.0"
+    "cesium": "^1.88.0"
   }
 }
