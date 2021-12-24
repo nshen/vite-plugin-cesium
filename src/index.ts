@@ -47,6 +47,11 @@ function vitePluginCesium(
           CESIUM_BASE_URL: JSON.stringify(CESIUM_BASE_URL)
         }
       };
+      if (!isBuild) {
+        userConfig.optimizeDeps = {
+          exclude: ['cesium']
+        };
+      }
       if (isBuild && !rebuildCesium) {
         userConfig.build!.rollupOptions = {
           external: ['cesium'],
