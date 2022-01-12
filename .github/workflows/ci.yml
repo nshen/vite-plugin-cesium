@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  package-build:
+    runs-on: ubuntu-latest
+    name: 'Build-Test'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install Deps
+        run: yarn install
+      - name: Build
+        run: yarn build
+
+  demo-build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node_version: ['12', '14', '16']
+        include:
+          - os: macos-latest
+            node_version: 16
+          - os: windows-latest
+            node_version: 16
+    name: 'Demo-Build-Test: node-${{ matrix.node_version }}, ${{ matrix.os }}'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set node version to ${{ matrix.node_version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node_version }}
+      - name: Package Install deps
+        run: yarn install
+      - name: Package Build
+        run: yarn build
+      - name: Demo Install deps
+        run: |
+          cd demo/
+          yarn install
+      - name: Demo build
+        run: |
+          cd demo/
+          yarn build
