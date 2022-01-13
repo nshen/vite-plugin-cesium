@@ -35,21 +35,15 @@ function vitePluginCesium(
       isBuild = command === 'build';
       if (c.base) {
         base = c.base;
+        if (base === '') base = './';
       }
-      if (base === '') base = './';
-
-      CESIUM_BASE_URL = path.posix.join(base, CESIUM_BASE_URL);
-
       if (c.build?.outDir) {
         outDir = c.build.outDir;
       }
-      const userConfig: UserConfig = {
-        build: {
-          assetsInlineLimit: 0,
-          chunkSizeWarningLimit: 4000
-        }
-      };
+      CESIUM_BASE_URL = path.posix.join(base, CESIUM_BASE_URL);
+      const userConfig: UserConfig = {};
       if (!isBuild) {
+        // -----------dev-----------
         userConfig.optimizeDeps = {
           exclude: ['cesium']
         };
@@ -57,19 +51,25 @@ function vitePluginCesium(
           CESIUM_BASE_URL: JSON.stringify(CESIUM_BASE_URL)
         };
       } else {
-        userConfig.build = {
-          ...userConfig.build,
-          rollupOptions: {
-            output: {
-              intro: `window.CESIUM_BASE_URL = "${CESIUM_BASE_URL}";`
+        // -----------build------------
+        if (rebuildCesium) {
+          // build 1) rebuild cesium library
+          userConfig.build = {
+            assetsInlineLimit: 0,
+            chunkSizeWarningLimit: 5000,
+            rollupOptions: {
+              output: {
+                intro: `window.CESIUM_BASE_URL = "${CESIUM_BASE_URL}";`
+              }
             }
-          }
-        };
-
-        if (!rebuildCesium) {
-          userConfig.build!.rollupOptions = {
-            external: ['cesium'],
-            plugins: [externalGlobals({ cesium: 'Cesium' })]
+          };
+        } else {
+          // build 2) copy Cesium.js later
+          userConfig.build = {
+            rollupOptions: {
+              external: ['cesium'],
+              plugins: [externalGlobals({ cesium: 'Cesium' })]
+            }
           };
         }
       }
