@@ -116,21 +116,26 @@ function vitePluginCesium(
     },
 
     transformIndexHtml() {
+      // Compatible with relative and absolute paths
+      const fixBase = (href: string) => {
+        return href.indexOf('/') === 0 ? href : (base+href);
+      }
+      
       const tags: HtmlTagDescriptor[] = [
         {
           tag: 'link',
           attrs: {
             rel: 'stylesheet',
-            href: normalizePath(
+            href: fixBase(normalizePath(
               path.join(CESIUM_BASE_URL, 'Widgets/widgets.css')
-            )
+            ))
           }
         }
       ];
       if (isBuild && !rebuildCesium) {
         tags.push({
           tag: 'script',
-          attrs: { src: normalizePath(path.join(base, 'cesium/Cesium.js')) }
+          attrs: { src: fixBase(normalizePath(path.join(base, 'cesium/Cesium.js'))) }
         });
       }
       return tags;
