@@ -77,37 +77,19 @@ function vitePluginCesium(
     },
 
     configureServer({ middlewares }) {
-      const cesiumPath = path.join(
-        cesiumBuildRootPath,
-        devMinifyCesium ? 'Cesium' : 'CesiumUnminified'
-      );
+      const cesiumPath = path.join(cesiumBuildRootPath, devMinifyCesium ? 'Cesium' : 'CesiumUnminified');
       middlewares.use(CESIUM_BASE_URL, serveStatic(cesiumPath));
     },
 
     async closeBundle() {
       if (isBuild) {
         try {
-          await fs.copy(
-            path.join(cesiumBuildPath, 'Assets'),
-            path.join(outDir, 'cesium/Assets')
-          );
-          await fs.copy(
-            path.join(cesiumBuildPath, 'ThirdParty'),
-            path.join(outDir, 'cesium/ThirdParty')
-          );
-          await fs.copy(
-            path.join(cesiumBuildPath, 'Workers'),
-            path.join(outDir, 'cesium/Workers')
-          );
-          await fs.copy(
-            path.join(cesiumBuildPath, 'Widgets'),
-            path.join(outDir, 'cesium/Widgets')
-          );
+          await fs.copy(path.join(cesiumBuildPath, 'Assets'), path.join(outDir, 'cesium/Assets'));
+          await fs.copy(path.join(cesiumBuildPath, 'ThirdParty'), path.join(outDir, 'cesium/ThirdParty'));
+          await fs.copy(path.join(cesiumBuildPath, 'Workers'), path.join(outDir, 'cesium/Workers'));
+          await fs.copy(path.join(cesiumBuildPath, 'Widgets'), path.join(outDir, 'cesium/Widgets'));
           if (!rebuildCesium) {
-            await fs.copy(
-              path.join(cesiumBuildPath, 'Cesium.js'),
-              path.join(outDir, 'cesium/Cesium.js')
-            );
+            await fs.copy(path.join(cesiumBuildPath, 'Cesium.js'), path.join(outDir, 'cesium/Cesium.js'));
           }
         } catch (err) {
           console.error('copy failed', err);
@@ -121,9 +103,7 @@ function vitePluginCesium(
           tag: 'link',
           attrs: {
             rel: 'stylesheet',
-            href:
-              base +
-              normalizePath(path.join(CESIUM_BASE_URL, 'Widgets/widgets.css'))
+            href: base + normalizePath(path.join(CESIUM_BASE_URL, 'Widgets/widgets.css'))
           }
         }
       ];
