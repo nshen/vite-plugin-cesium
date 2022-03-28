@@ -121,16 +121,18 @@ function vitePluginCesium(
           tag: 'link',
           attrs: {
             rel: 'stylesheet',
-            href: normalizePath(
-              path.join(CESIUM_BASE_URL, 'Widgets/widgets.css')
-            )
+            href:
+              base +
+              normalizePath(path.join(CESIUM_BASE_URL, 'Widgets/widgets.css'))
           }
         }
       ];
       if (isBuild && !rebuildCesium) {
         tags.push({
           tag: 'script',
-          attrs: { src: normalizePath(path.join(base, 'cesium/Cesium.js')) }
+          attrs: {
+            src: base + normalizePath(path.join(CESIUM_BASE_URL, 'Cesium.js'))
+          }
         });
       }
       return tags;
