@@ -23,7 +23,7 @@ function vitePluginCesium(
   const cesiumBuildRootPath = 'node_modules/cesium/Build';
   const cesiumBuildPath = 'node_modules/cesium/Build/Cesium/';
 
-  let CESIUM_BASE_URL = '/cesium/';
+  let CESIUM_BASE_URL = 'cesium/';
   let outDir = 'dist';
   let base: string = '/';
   let isBuild: boolean = false;
@@ -78,7 +78,7 @@ function vitePluginCesium(
 
     configureServer({ middlewares }) {
       const cesiumPath = path.join(cesiumBuildRootPath, devMinifyCesium ? 'Cesium' : 'CesiumUnminified');
-      middlewares.use(CESIUM_BASE_URL, serveStatic(cesiumPath));
+      middlewares.use(path.join('/', CESIUM_BASE_URL), serveStatic(cesiumPath));
     },
 
     async closeBundle() {
@@ -103,7 +103,7 @@ function vitePluginCesium(
           tag: 'link',
           attrs: {
             rel: 'stylesheet',
-            href: base + normalizePath(path.join(CESIUM_BASE_URL, 'Widgets/widgets.css'))
+            href: normalizePath(path.join(CESIUM_BASE_URL, 'Widgets/widgets.css')),
           }
         }
       ];
@@ -111,7 +111,7 @@ function vitePluginCesium(
         tags.push({
           tag: 'script',
           attrs: {
-            src: base + normalizePath(path.join(CESIUM_BASE_URL, 'Cesium.js'))
+            src: normalizePath(path.join(CESIUM_BASE_URL, 'Cesium.js')),
           }
         });
       }
