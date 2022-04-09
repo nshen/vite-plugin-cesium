@@ -78,7 +78,7 @@ function vitePluginCesium(
 
     configureServer({ middlewares }) {
       const cesiumPath = path.join(cesiumBuildRootPath, devMinifyCesium ? 'Cesium' : 'CesiumUnminified');
-      middlewares.use(path.join('/', CESIUM_BASE_URL), serveStatic(cesiumPath));
+      middlewares.use(path.posix.join('/', CESIUM_BASE_URL), serveStatic(cesiumPath));
     },
 
     async closeBundle() {
