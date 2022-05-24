@@ -10,18 +10,17 @@ interface VitePluginCesiumOptions {
    */
   rebuildCesium?: boolean;
   devMinifyCesium?: boolean;
+  cesiumBuildRootPath?: string;
+  cesiumBuildPath?: string
 }
 
-function vitePluginCesium(
-  options: VitePluginCesiumOptions = {
-    rebuildCesium: false,
-    devMinifyCesium: false
-  }
-): Plugin {
-  const { rebuildCesium, devMinifyCesium } = options;
-
-  const cesiumBuildRootPath = 'node_modules/cesium/Build';
-  const cesiumBuildPath = 'node_modules/cesium/Build/Cesium/';
+function vitePluginCesium(options: VitePluginCesiumOptions = {}): Plugin {
+  const { 
+    rebuildCesium = false, 
+    devMinifyCesium = false, 
+    cesiumBuildRootPath = 'node_modules/cesium/Build', 
+    cesiumBuildPath = 'node_modules/cesium/Build/Cesium/' 
+  } = options;
 
   let CESIUM_BASE_URL = 'cesium/';
   let outDir = 'dist';
