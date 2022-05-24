@@ -14,7 +14,7 @@ interface VitePluginCesiumOptions {
   cesiumBuildPath?: string
 }
 
-function vitePluginCesium(options: VitePluginCesiumOptions): Plugin {
+function vitePluginCesium(options: VitePluginCesiumOptions = {}): Plugin {
   const { 
     rebuildCesium = false, 
     devMinifyCesium = false, 
