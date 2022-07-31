@@ -2,14 +2,15 @@
   "name": "cesium-demo",
   "version": "1.0.0",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite build && vite preview"
   },
   "devDependencies": {
-    "cesium": "^1.91.0",
-    "vite": "^2.9.1",
+    "cesium": "^1.95.0",
+    "vite": "^3.0.4",
     "vite-plugin-cesium": "link:.."
   }
 }
