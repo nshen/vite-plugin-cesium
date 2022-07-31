@@ -2,14 +2,23 @@
   "name": "vite-plugin-cesium",
   "version": "1.2.19",
   "description": "Cesium library plugin for Vite",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc -w"
+    "dev": "tsdv watch",
+    "build": "tsdv build",
+    "prepare": "npm run build"
   },
   "keywords": [
     "vite",
@@ -36,10 +45,12 @@
     "@types/node": "^14.14.31",
     "@types/serve-static": "^1.13.9",
     "prettier": "^2.2.1",
+    "tsdv": "^0.6.1",
     "typescript": "^4.2.2",
-    "vite": "^2.7.1"
+    "vite": "^3.0.4"
   },
   "peerDependencies": {
-    "cesium": "^1.88.0"
+    "cesium": "^1.88.0",
+    "vite": ">=2.7.1"
   }
 }

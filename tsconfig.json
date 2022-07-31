@@ -1,11 +1,17 @@
 {
-    "extends": "@tsconfig/node12/tsconfig.json",
     "include": [
         "src"
     ],
     "compilerOptions": {
         "outDir": "dist",
         "declaration": true,
+        "target": "ES2017",
+        "module": "commonjs",
         "removeComments": false,
-    },
+        "strict": true,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    }
 }
