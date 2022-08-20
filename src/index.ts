@@ -43,9 +43,6 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
       const userConfig: UserConfig = {};
       if (!isBuild) {
         // -----------dev-----------
-        userConfig.optimizeDeps = {
-          exclude: ['cesium']
-        };
         userConfig.define = {
           CESIUM_BASE_URL: JSON.stringify(CESIUM_BASE_URL)
         };
