@@ -32,7 +32,7 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
 
     config(c, { command }) {
       isBuild = command === 'build';
-      if (c.base) {
+      if (c.base !== undefined) {
         base = c.base;
         if (base === '') base = './';
       }
