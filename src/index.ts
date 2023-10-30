@@ -74,7 +74,11 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
 
     configureServer({ middlewares }) {
       const cesiumPath = path.join(cesiumBuildRootPath, devMinifyCesium ? 'Cesium' : 'CesiumUnminified');
-      middlewares.use(path.posix.join('/', CESIUM_BASE_URL), serveStatic(cesiumPath));
+      middlewares.use(path.posix.join('/', CESIUM_BASE_URL), serveStatic(cesiumPath, {
+        setHeaders: (res, path, stat) => {
+          res.setHeader('Access-Control-Allow-Origin', '*')
+        }
+      }));
     },
 
     async closeBundle() {
