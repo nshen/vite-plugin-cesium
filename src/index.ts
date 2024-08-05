@@ -12,6 +12,7 @@ interface VitePluginCesiumOptions {
   devMinifyCesium?: boolean;
   cesiumBuildRootPath?: string;
   cesiumBuildPath?: string;
+  cesiumBaseUrl?: string;
 }
 
 export default function vitePluginCesium(options: VitePluginCesiumOptions = {}): Plugin {
@@ -19,10 +20,14 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
     rebuildCesium = false,
     devMinifyCesium = false,
     cesiumBuildRootPath = 'node_modules/cesium/Build',
-    cesiumBuildPath = 'node_modules/cesium/Build/Cesium/'
+    cesiumBuildPath = 'node_modules/cesium/Build/Cesium/',
+    cesiumBaseUrl = 'cesium/'
   } = options;
 
-  let CESIUM_BASE_URL = 'cesium/';
+  let CESIUM_BASE_URL = cesiumBaseUrl;
+  if (!CESIUM_BASE_URL.endsWith('/')) {
+    CESIUM_BASE_URL += '/';
+  }
   let outDir = 'dist';
   let base: string = '/';
   let isBuild: boolean = false;
@@ -59,7 +64,7 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
             chunkSizeWarningLimit: 5000,
             rollupOptions: {
               output: {
-                intro: `window.CESIUM_BASE_URL = "${CESIUM_BASE_URL}";`
+                intro: `window.CESIUM_BASE_URL = ${JSON.stringify(CESIUM_BASE_URL)};`
               }
             }
           };
@@ -88,12 +93,12 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
     async closeBundle() {
       if (isBuild) {
         try {
-          await fs.copy(path.join(cesiumBuildPath, 'Assets'), path.join(outDir, 'cesium/Assets'));
-          await fs.copy(path.join(cesiumBuildPath, 'ThirdParty'), path.join(outDir, 'cesium/ThirdParty'));
-          await fs.copy(path.join(cesiumBuildPath, 'Workers'), path.join(outDir, 'cesium/Workers'));
-          await fs.copy(path.join(cesiumBuildPath, 'Widgets'), path.join(outDir, 'cesium/Widgets'));
+          await fs.copy(path.join(cesiumBuildPath, 'Assets'), path.join(outDir, CESIUM_BASE_URL, 'Assets'));
+          await fs.copy(path.join(cesiumBuildPath, 'ThirdParty'), path.join(outDir, CESIUM_BASE_URL, 'ThirdParty'));
+          await fs.copy(path.join(cesiumBuildPath, 'Workers'), path.join(outDir, CESIUM_BASE_URL, 'Workers'));
+          await fs.copy(path.join(cesiumBuildPath, 'Widgets'), path.join(outDir, CESIUM_BASE_URL, 'Widgets'));
           if (!rebuildCesium) {
-            await fs.copy(path.join(cesiumBuildPath, 'Cesium.js'), path.join(outDir, 'cesium/Cesium.js'));
+            await fs.copy(path.join(cesiumBuildPath, 'Cesium.js'), path.join(outDir, CESIUM_BASE_URL, 'Cesium.js'));
           }
         } catch (err) {
           console.error('copy failed', err);
